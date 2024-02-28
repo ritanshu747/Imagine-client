@@ -1,6 +1,6 @@
-Della AI Clone
+IMAGINE-AI
 
-Welcome to Della AI Clone! This project aims to provide a simplified version of Della AI, a smart assistant powered by OpenAI API, integrated with Cloudinary for media management, and built using Material-UI for the user interface.
+Welcome to IMAGINE-AI clone of Della AI. This project aims to provide a simplified version of Della AI, a smart assistant powered by OpenAI API, integrated with Cloudinary for media management, and built using Material-UI for the user interface.
 Table of Contents
 
     Introduction
@@ -28,7 +28,7 @@ To run Della AI Clone locally, follow these steps:
 
     bash
 
-git clone https://github.com/yourusername/della-ai-clone.git
+git clone https://github.com/ritanshu747/Imagine-client.git
 
 Navigate to the project directory:
 
