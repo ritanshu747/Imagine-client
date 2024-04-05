@@ -23,7 +23,7 @@ const CreatePost = () => {
       setError("");
 
       try {
-        const response = await fetch("http://localhost:8000/api/v1/post", {
+        const response = await fetch("https://imagine-server-1.onrender.com/api/v1/post", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const CreatePost = () => {
         setGeneratingImg(true);
         setError("");
 
-        const response = await fetch("http://localhost:8000/api/v1/dalle", {
+        const response = await fetch("https://imagine-server-1.onrender.com/api/v1/dalle", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
