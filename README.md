@@ -40,9 +40,6 @@ IMAGINE-AI is a smart assistant project powered by OpenAI API for natural langua
 
 - **Media Management:**
   - Cloudinary
-  - 
- Clone this repository to your local machine:
- -git clone https://github.com/your-username/IMAGINE-AI.git
 
 ## Installation
 
@@ -50,39 +47,28 @@ To run IMAGINE-AI locally, follow these steps:
 
 1. Clone this repository to your local machine:
 
-git clone https://github.com/ritanshu747/Imagine-client.git
-
-css
-
+   git clone https://github.com/your-username/IMAGINE-AI.git
 
 2. Navigate to the project directory:
 
-cd IMAGINE-AI
-
-
+   cd IMAGINE-AI
 
 3. Install dependencies:
 
-npm install
-
+   npm install
 
 4. Obtain your OpenAI API key and Cloudinary credentials.
 
 5. Create a `.env` file in the root directory of the project and add your API keys:
-
-REACT_APP_OPENAI_API_KEY=your_openai_api_key
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-DATABASE_URL=your_Database_url
-
-markdown
-
+    OPENAI_API_KEY=your_openai_api_key
+    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+    CLOUDINARY_API_KEY=your_cloudinary_api_key
+    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+    DATABASE_URL=your_Database_url
 
 6. Start the development server:
 
 npm start
-
 
 ## Usage
 
@@ -91,3 +77,5 @@ Once the application is running, you can interact with IMAGINE-AI through the co
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
+
+
