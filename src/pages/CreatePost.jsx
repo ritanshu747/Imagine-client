@@ -13,34 +13,37 @@ const CreatePost = () => {
   });
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.prompt && form.photo) {
       setLoading(true);
+      setError("");
 
       try {
-        const response = await fetch(
-          "https://imagine-server.onrender.com/api/v1/post",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form),
-          }
-        );
-        await response.json();
+        const response = await fetch("http://localhost:8000/api/v1/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to share post");
+        }
+
         navigate("/");
       } catch (error) {
-        alert(err);
+        setError(error.message);
         console.log(error);
       } finally {
         setLoading(false);
       }
     } else {
-      alert("Please enter the prompt and generate an Image");
+      setError("Please enter the prompt and generate an image");
     }
   };
 
@@ -57,26 +60,30 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch(
-          "https://imagine-server.onrender.com/api/v1/dalle",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt: form.prompt }),
-          }
-        );
+        setError("");
+
+        const response = await fetch("http://localhost:8000/api/v1/dalle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: form.prompt }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to generate image");
+        }
+
         const data = await response.json();
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (error) {
-        alert(error);
+        setError(error.message);
         console.log(error);
       } finally {
         setGeneratingImg(false);
       }
     } else {
-      alert("Please enter a prompt");
+      setError("Please enter a prompt");
     }
   };
 
@@ -89,6 +96,7 @@ const CreatePost = () => {
         </p>
       </div>
       <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
+        {error && <div className="text-red-500 mb-4">{error}</div>}
         <div className="flex flex-col gap-5">
           <FormField
             labelName="Your Name"
@@ -108,30 +116,14 @@ const CreatePost = () => {
             isSurpriseMe
             handleSurpriseMe={handleSurpriseMe}
           />
-          <div
-            className="relative flex justify-center items-center bg-gray-50 border border-gray-300 text-gray-900
-          focus:ring-[#4649ff] focus:border-[#4649ff] text-sm rounded-lg w-64 p-3
-          h-64 
-        "
-          >
+          <div className="relative flex justify-center items-center bg-gray-50 border border-gray-300 text-gray-900 focus:ring-[#4649ff] focus:border-[#4649ff] text-sm rounded-lg w-64 p-3 h-64">
             {form.photo ? (
-              <img
-                src={form.photo}
-                alt={form.prompt}
-                className="w-full h-full object-contain"
-              />
+              <img src={form.photo} alt={form.prompt} className="w-full h-full object-contain" />
             ) : (
-              <img
-                src={preview}
-                alt="preview"
-                className="w-9/12 object-contain opacity-40"
-              />
+              <img src={preview} alt="preview" className="w-9/12 object-contain opacity-40" />
             )}
             {generatingImg && (
-              <div
-                className="absolute inset-0 z-0 flex justify-center items-center
-               bg-[rgba(0,0,0,0.5)] rounded-lg "
-              >
+              <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
                 <Loader />
               </div>
             )}
@@ -142,9 +134,7 @@ const CreatePost = () => {
             <Loader />
           ) : (
             <button
-              className="text-white bg-green-700 font-medium rounded-md text-sm
-            w-full sm:w-auto px-5 py-2.5 text-center
-            "
+              className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               type="button"
               onClick={generateImage}
             >
@@ -162,9 +152,7 @@ const CreatePost = () => {
             <button
               onClick={handleSubmit}
               type="button"
-              className="mt-3 text-white bg-[#6469ff] font-medium rounded-md
-          text-sm w-full sm:w-auto px-5 py-2.5 text-center
-          "
+              className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             >
               Share with the community
             </button>

@@ -11,32 +11,33 @@ const RenderCards = ({ data, title }) => {
 };
 
 const Home = () => {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState(null);
-  const [searchTimeout, setSearchTimeout] = useState(null);
-
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
 
       try {
-        const response = await fetch(
-          "https://imagine-server.onrender.com/api/v1/post",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.ok) {
-          const result = await response.json();
-          setPosts(result.data.reverse());
+        const response = await fetch("http://localhost:8000/api/v1/post", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
         }
+
+        const result = await response.json();
+        setPosts(result.data.reverse());
       } catch (error) {
+        setError(error.message);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -46,18 +47,15 @@ const Home = () => {
   }, []);
 
   const handleSearchChange = (e) => {
-    clearTimeout(searchTimeout);
-    setSearchText(e.target.value);
-    setSearchTimeout(
-      setTimeout(() => {
-        const searchResults = posts.filter(
-          (post) =>
-            post.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            post.prompt.toLowerCase().includes(searchText.toLowerCase())
-        );
-        setSearchResults(searchResults);
-      }, 500)
+    const searchText = e.target.value.toLowerCase();
+    setSearchText(searchText);
+
+    const searchResults = posts.filter(
+      (post) =>
+        post.name.toLowerCase().includes(searchText) ||
+        post.prompt.toLowerCase().includes(searchText)
     );
+    setSearchResults(searchResults);
   };
 
   return (
@@ -82,6 +80,7 @@ const Home = () => {
         />
       </div>
       <div className="mt-10">
+        {error && <div className="text-red-500 mb-4">{error}</div>}
         {loading ? (
           <div className="flex justify-center items-center">
             <Loader />
@@ -90,19 +89,11 @@ const Home = () => {
           <>
             {searchText && (
               <h2 className="font-medium text-[#666e75] text-xl mb-3">
-                Showing results for{" "}
-                <span className="text-[#222328]">{searchText}</span>
+                Showing results for <span className="text-[#222328]">{searchText}</span>
               </h2>
             )}
-            <div className="grid lg:grid-col-4 sm:grid-col-3 xs:grid-cols-2 grid-col-1 gap-3">
-              {searchText ? (
-                <RenderCards
-                  data={searchResults}
-                  title="No search results found"
-                />
-              ) : (
-                <RenderCards data={posts} title="No posts found" />
-              )}
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-3">
+              <RenderCards data={searchText ? searchResults : posts} title="No posts found" />
             </div>
           </>
         )}

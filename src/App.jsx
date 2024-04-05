@@ -7,18 +7,14 @@ import "./App.css";
 function App() {
   return (
     <BrowserRouter>
-      <header
-        className="w-full flex justify-between items-center bg-white
-      sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4] 
-      "
-      >
-        <Link to="/">
-          <img src={logo} alt="logo" className="w-28 object-contain" />
+      <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
+        <Link to="/" className="flex-shrink-0">
+          <img src={logo} alt="logo" className="w-28 h-auto" />
         </Link>
 
         <Link
           to="/create-post"
-          className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md"
+          className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md hover:bg-[#4649ff] transition-colors"
         >
           Create
         </Link>
