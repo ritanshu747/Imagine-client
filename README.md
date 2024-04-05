@@ -47,7 +47,7 @@ To run IMAGINE-AI locally, follow these steps:
 
 1. Clone this repository to your local machine:
 
-   git clone https://github.com/your-username/IMAGINE-AI.git
+   git clone https://github.com/ritanshu747/Imagine-client.git
 
 2. Navigate to the project directory:
 
